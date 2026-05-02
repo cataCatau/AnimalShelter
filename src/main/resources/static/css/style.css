@@ -1,0 +1,129 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    background-image: url('/background_login.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.login-card {
+    background-color: rgba(255, 255, 255, 0.6);
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-header {
+    background-color: rgba(242, 107, 28, 0.9);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.login-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.login-header img {
+    max-height: 60px;
+}
+
+.login-body {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #05627d;
+    outline: none;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: #05627d;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: #013140;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid #f5c2c7;
+    font-weight: bold;
+}
+
+.animal-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 300px;
+    display: inline-block;
+}
+
+.btn-custom {
+    background-color: #fbb03b;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-custom:hover {
+    background-color: #e59a2f;
+}

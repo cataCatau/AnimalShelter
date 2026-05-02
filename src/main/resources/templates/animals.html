@@ -49,7 +49,7 @@
 <body>
 
 <div class="container">
-
+    <a th:if="${shelterId != null}" th:href="@{/shelters/{id}/animals/new(id=${shelterId})}" class="btn-custom" style="text-decoration: none;">add animal</a>
     <!-- Sistemul de Grid Bootstrap (2 coloane pe ecrane medii/mari) -->
     <div class="row">
         <!-- Iterăm prin lista de animale -->
