@@ -63,12 +63,50 @@ public class AnimalController {
     }
 
     @PostMapping("/shelters/{id}/animals/save")
-    public String saveAnimal(@PathVariable("id") Long shelterId, @ModelAttribute("animal") Animal animal, HttpSession session) {
+    public String saveOrUpdateAnimal(@PathVariable("id") Long shelterId,
+                                     @ModelAttribute("animal") Animal animal,
+                                     Model model,
+                                     HttpSession session) {
+
         if (session.getAttribute("loggedIn") == null) {
             return "redirect:/login";
         }
 
-        animalDao.save(animal);
-        return "redirect:/shelters/" + shelterId + "/animals";
+        animal.setShelterId(shelterId);
+
+        try {
+            if (animal.getId() == null || animal.getId() == 0) {
+                animalDao.save(animal);
+            } else {
+                animalDao.update(animal);
+            }
+
+            return "redirect:/shelters/" + shelterId + "/animals";
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            model.addAttribute("error", "Error: " + e.getMessage());
+            model.addAttribute("shelterId", shelterId);
+            return "animal-form";
+        }
+    }
+
+    @GetMapping("/shelters/{shelterId}/animals/{animalId}/edit")
+    public String showEditAnimalForm(@PathVariable("shelterId") Long shelterId,
+                                     @PathVariable("animalId") Long animalId,
+                                     Model model,
+                                     HttpSession session) {
+
+        if(session.getAttribute("loggedIn") == null){
+            return "redirect:/login";
+        }
+
+        Animal animal = animalDao.findById(animalId);
+
+        model.addAttribute("animal", animal);
+
+        model.addAttribute("shelterId", shelterId);
+
+        return "animal-form";
     }
 }

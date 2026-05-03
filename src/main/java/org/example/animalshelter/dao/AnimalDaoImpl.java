@@ -21,6 +21,9 @@ public class AnimalDaoImpl implements AnimalDao {
         Animal animal = new Animal();
         animal.setId(rs.getLong("id"));
 
+        long shelterId = rs.getLong("shelter_id");
+        animal.setShelterId(rs.wasNull() ? null : shelterId);
+
         long cageId = rs.getLong("cage_id");
         animal.setCageId(rs.wasNull() ? null : cageId);
 
@@ -35,6 +38,8 @@ public class AnimalDaoImpl implements AnimalDao {
         animal.setDateOfEntry(doe != null ? doe.toLocalDate() : null);
 
         animal.setImageUrl(rs.getString("image_url"));
+        animal.setGender(rs.getString("gender"));
+        animal.setDescription(rs.getString("description"));
         return animal;
     };
 
@@ -64,16 +69,20 @@ public class AnimalDaoImpl implements AnimalDao {
 
     @Override
     public void save(Animal animal) {
-        String sql = "INSERT INTO animals (cage_id, name, species, breed, date_of_birth, date_of_entry, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, animal.getCageId(), animal.getName(), animal.getSpecies(), 
-                            animal.getBreed(), animal.getDateOfBirth(), animal.getDateOfEntry(), animal.getImageUrl());
+        String sql = "INSERT INTO animals (shelter_id, cage_id, name, species, breed, date_of_birth, date_of_entry, image_url, gender, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, animal.getShelterId(), animal.getCageId(), animal.getName(),
+                            animal.getSpecies(), animal.getBreed(), animal.getDateOfBirth(),
+                            animal.getDateOfEntry(), animal.getImageUrl(), animal.getGender(),
+                            animal.getDescription());
     }
 
     @Override
     public void update(Animal animal) {
-        String sql = "UPDATE animals SET cage_id = ?, name = ?, species = ?, breed = ?, date_of_birth = ?, date_of_entry = ?, image_url = ? WHERE id = ?";
-        jdbcTemplate.update(sql, animal.getCageId(), animal.getName(), animal.getSpecies(), 
-                            animal.getBreed(), animal.getDateOfBirth(), animal.getDateOfEntry(), animal.getId(), animal.getImageUrl());
+        String sql = "UPDATE animals SET shelter_id = ?, cage_id = ?, name = ?, species = ?, breed = ?, date_of_birth = ?, date_of_entry = ?, image_url = ?, gender = ?, description = ? WHERE id = ?";
+        jdbcTemplate.update(sql, animal.getShelterId(), animal.getCageId(), animal.getName(),
+                            animal.getSpecies(), animal.getBreed(), animal.getDateOfBirth(),
+                            animal.getDateOfEntry(), animal.getImageUrl(),
+                            animal.getGender(), animal.getDescription(), animal.getId());
     }
 
     @Override
