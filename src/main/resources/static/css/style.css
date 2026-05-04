@@ -100,6 +100,21 @@ body {
     background-color: #e59a2f;
 }
 
+.btn-action {
+    display: inline-block;
+    background-color: #fbb03b; /* Portocaliul tau specific */
+    color: white !important; /* Text alb */
+    padding: 10px 20px;
+    border-radius: 25px; /* Rotunjit profesional */
+    text-decoration: none !important; /* Scoate sublinierile de link */
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
 /* =========================================
    5. FORMULARE ȘI ALERTE
    ========================================= */
@@ -193,6 +208,14 @@ body {
     gap: 30px; /* Spațiul dintre carduri */
 }
 
+.animal-content {
+    width: 60%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; /* Previne lățirea peste măsură */
+}
+
 .animal-card {
     display: flex; /* Așază imaginea în stânga, textul în dreapta */
     flex-direction: row;
@@ -221,6 +244,15 @@ body {
     display: block;
 }
 
+.animal-desc {
+    font-size: 0.95rem;
+    color: #6c757d;
+    font-style: italic; /* Aici se face textul italic */
+    line-height: 1.5;
+    margin: 5px 0;
+    display: block;
+}
+
 .animal-info {
     flex: 1; /* Ocupă restul de 60% din lățime */
     padding: 20px;
@@ -237,10 +269,41 @@ body {
     font-size: 1.4rem;
 }
 
-.animal-actions {
-    margin-top: auto; /* Magia Flexbox: împinge butonul exact la baza cardului! */
+/* BARA DE PROGRES ADOPȚIE */
+.adoption-score-container {
+    width: 100%; /* Ocupă tot spațiul coloanei din dreapta */
+    margin: 5px 0 5px 0;
+    padding-top: 10px;
+    border-top: 1px solid #eee; /* Linia de demarcare */
 }
 
+.adoption-score-text {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+    display: block;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    display: block;
+    transition: width 0.8s ease-in-out, background-color 0.3s ease;
+}
+
+.animal-actions {
+    width: 100%; /* Butonul se aliniază cu bara */
+    margin-top: auto;
+}
 /* =========================================
    8. RESPONSIVITATE (MEDIA QUERIES)
    ========================================= */

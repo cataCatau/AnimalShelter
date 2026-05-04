@@ -18,6 +18,7 @@ public class Animal {
     private String imageUrl;
     private String gender;
     private String description;
+    private Integer adoptionScore;
     public Animal() {}
 
     public Long getId() { return id; }
@@ -42,4 +43,6 @@ public class Animal {
     public void setDescription(String description) { this.description = description;}
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
+    public Integer getAdoptionScore() { return adoptionScore; }
+    public void setAdoptionScore(Integer adoptionScore) { this.adoptionScore = adoptionScore; }
 }

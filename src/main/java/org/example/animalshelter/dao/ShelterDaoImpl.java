@@ -22,6 +22,7 @@ public class ShelterDaoImpl implements ShelterDao {
         shelter.setName(rs.getString("name"));
         shelter.setCountry(rs.getString("country"));
         shelter.setCity(rs.getString("city"));
+        shelter.setImageUrl(rs.getString("image_url"));
         return shelter;
     };
 
@@ -39,14 +40,16 @@ public class ShelterDaoImpl implements ShelterDao {
 
     @Override
     public void save(Shelter shelter) {
-        String sql = "INSERT INTO shelters (name, country, city) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, shelter.getName(), shelter.getCountry(), shelter.getCity());
+        String sql = "INSERT INTO shelters (name, country, city, image_url) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, shelter.getName(), shelter.getCountry(), shelter.getCity(),
+                            shelter.getImageUrl());
     }
 
     @Override
     public void update(Shelter shelter) {
-        String sql = "UPDATE shelters SET name = ?, country = ?, city = ? WHERE id = ?";
-        jdbcTemplate.update(sql, shelter.getName(), shelter.getCountry(), shelter.getCity(), shelter.getId());
+        String sql = "UPDATE shelters SET name = ?, country = ?, city = ?, shelter = ? WHERE id = ?";
+        jdbcTemplate.update(sql, shelter.getName(), shelter.getCountry(), shelter.getCity(),
+                            shelter.getImageUrl(), shelter.getId());
     }
 
     @Override

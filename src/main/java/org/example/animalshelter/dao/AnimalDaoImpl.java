@@ -40,28 +40,29 @@ public class AnimalDaoImpl implements AnimalDao {
         animal.setImageUrl(rs.getString("image_url"));
         animal.setGender(rs.getString("gender"));
         animal.setDescription(rs.getString("description"));
+
+        animal.setAdoptionScore(rs.getInt("adoption_score"));
         return animal;
     };
 
     @Override
     public List<Animal> findAll() {
-        return jdbcTemplate.query("SELECT * FROM animals", rowMapper);
+        return jdbcTemplate.query("SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a", rowMapper);
     }
 
     @Override
     public Animal findById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM animals WHERE id = ?", rowMapper, id);
+        return jdbcTemplate.queryForObject("SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a WHERE a.id = ?", rowMapper, id);
     }
 
     @Override
     public List<Animal> findByCageId(Long cageId) {
-
-        return jdbcTemplate.query("SELECT * FROM animals WHERE cage_id = ?", rowMapper, cageId);
+        return jdbcTemplate.query("SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a WHERE a.cage_id = ?", rowMapper, cageId);
     }
 
     @Override
     public List<Animal> findByShelterId(Long shelterId){
-        String sql = "SELECT a.* FROM animals a " +
+        String sql = "SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a " +
                 "JOIN cages c ON a.cage_id = c.id " +
                 "WHERE c.shelter_id = ?";
         return jdbcTemplate.query(sql, rowMapper, shelterId);

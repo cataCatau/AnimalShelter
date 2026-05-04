@@ -5,16 +5,18 @@ public class Shelter {
     private String name;
     private String country;
     private String city;
+    private String imageUrl;
 
 
     public Shelter() {
     }
 
-    public Shelter(Long id, String name, String country, String city) {
+    public Shelter(Long id, String name, String country, String city, String imageUrl) {
         this.id = id;
         this.name = name;
         this.country = country;
         this.city = city;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() { return id; }
@@ -28,4 +30,7 @@ public class Shelter {
 
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

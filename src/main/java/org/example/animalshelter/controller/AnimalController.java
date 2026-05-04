@@ -58,6 +58,7 @@ public class AnimalController {
         }
         model.addAttribute("animal", new Animal());
         model.addAttribute("shelterId", shelterId);
+        model.addAttribute("today", java.time.LocalDate.now());
 
         return "animal-form";
     }
@@ -106,7 +107,7 @@ public class AnimalController {
         model.addAttribute("animal", animal);
 
         model.addAttribute("shelterId", shelterId);
-
+        model.addAttribute("today", java.time.LocalDate.now());
         return "animal-form";
     }
 }

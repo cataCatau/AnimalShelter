@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ours Animals</title>
+    <title>Our Animals</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -21,27 +21,46 @@
         <div class="animal-card" th:each="animal : ${animals}">
 
             <div class="animal-img-wrapper">
-                <img th:if="${animal.imageUrl != null}" th:src="${animal.imageUrl}" class="animal-img" alt="Poză animal">
-                <img th:if="${animal.imageUrl == null}" src="https://via.placeholder.com/300x400?text=Fără+Poză" class="animal-img" alt="Fără Poză">
+                <img th:if="${animal.imageUrl != null}" th:src="${animal.imageUrl}" class="animal-img" alt="Animal photo">
+                <img th:if="${animal.imageUrl == null}" src="https://via.placeholder.com/400x500?text=No+Photo" class="animal-img" alt="No photo available">
             </div>
 
-            <div class="animal-info">
-                <h3 class="animal-name" th:text="${animal.name}">Nume Animal</h3>
+            <div class="animal-content">
 
-                <p class="icon-text">🪪 <strong>ID:</strong> <span th:text="${animal.id}"></span></p>
-                <p class="icon-text">🔒 <strong>Cage ID:</strong> <span th:text="${animal.cageId}"></span></p>
-                <p class="icon-text">🐾 <strong>Species:</strong> <span th:text="${animal.species}"></span></p>
-                <p class="icon-text">❤️ <strong>Breed:</strong> <span th:text="${animal.breed}"></span></p>
-                <p class="icon-text">📅 <strong>Date of Birth:</strong> <span th:text="${animal.dateOfBirth}"></span></p>
-                <p class="icon-text">📅 <strong>Date of Entry:</strong> <span th:text="${animal.dateOfEntry}"></span></p>
-                <p class="icon-text">🚻 <strong>Gender:</strong> <span th:text="${animal.gender}"></span></p>
-                <p class="text-muted italic-small"><em th:text="${animal.description}"></em></p>
-
-                <div class="animal-actions">
-                    <a th:href="@{/shelters/{sId}/animals/{aId}/edit(sId=${shelterId}, aId=${animal.id})}" class="btn-orange">Actions</a>
+                <div class="animal-header">
+                    <h3 class="animal-name" th:text="${animal.name}">Animal Name</h3>
+                    <div class="animal-breed" th:text="${animal.species} + ' • ' + ${animal.breed}">Species • Breed</div>
                 </div>
-            </div>
 
+                <div class="animal-details-grid">
+                    <div class="detail-item">🪪 <strong>ID:</strong> <span th:text="${animal.id}"></span></div>
+                    <div class="detail-item">🔒 <strong>Cage:</strong> <span th:text="${animal.cageId}"></span></div>
+                    <div class="detail-item">🚻 <strong>Gender:</strong> <span th:text="${animal.gender}"></span></div>
+                    <div class="detail-item">🎂 <strong>Born:</strong> <span th:text="${animal.dateOfBirth}"></span></div>
+                    <div class="detail-item" style="grid-column: span 2;">📅 <strong>Entry Date:</strong> <span th:text="${animal.dateOfEntry}"></span></div>
+                </div>
+
+                <p class="animal-desc" th:text="'&ldquo;' + ${animal.description} + '&rdquo;'"></p>
+
+                <div class="animal-footer">
+                    <div class="adoption-score-container">
+                        <div class="score-header">
+                            <span>📈 Adoption Chance</span>
+                            <span class="score-value" th:text="${animal.adoptionScore} + '%'"></span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"
+                                 th:styleappend="'width: ' + ${animal.adoptionScore} + '%; background-color: ' + (${animal.adoptionScore} > 75 ? '#28a745' : (${animal.adoptionScore} > 40 ? '#ffc107' : '#dc3545')) + ';'">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="animal-actions">
+                        <a th:href="@{/shelters/{sId}/animals/{aId}/edit(sId=${shelterId}, aId=${animal.id})}" class="btn-action">Actions</a>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
