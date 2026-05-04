@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 public class Animal {
     private Long id;
-    private Long shelterId;
     private Long cageId;
     private String name;
     private String species;
@@ -23,8 +22,6 @@ public class Animal {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public Long getShelterId() { return shelterId; }
-    public void setShelterId(Long shelterId) { this.shelterId = shelterId; }
     public Long getCageId() { return cageId; }
     public void setCageId(Long cageId) { this.cageId = cageId; }
     public String getName() { return name; }

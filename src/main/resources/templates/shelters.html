@@ -14,24 +14,24 @@
     <div class="page-header">
         <h2 style="color: #05627d;">Shelters</h2>
     </div>
-    <div class="animals-grid">
+    <div class="shelters-grid">
 
+        <div class="shelter-card" th:each="shelter : ${shelters}">
 
-        <div class="animal-card" th:each="shelter : ${shelters}">
-
-            <div class="animal-img-wrapper">
-                <img th:if="${shelter.imageUrl != null}" th:src="${shelter.imageUrl}" class="animal-img" alt="Shelter image">
+            <div class="shelter-img-wrapper">
+                <img th:if="${shelter.imageUrl != null}" th:src="${shelter.imageUrl}" class="shelter-img" alt="Shelter photo">
+                <img th:if="${shelter.imageUrl == null}" src="https://via.placeholder.com/300x200?text=No+Photo" class="shelter-img">
             </div>
 
-            <div class="animal-info">
-                <h3 class="animal-name" th:text="${shelter.name}">Shelter Name</h3>
+            <div class="shelter-content">
+                <h3 class="shelter-name" th:text="${shelter.name}">Shelter Name</h3>
 
-                <p class="icon-text">🪪 <strong>ID:</strong> <span th:text="${shelter.id}"></span></p>
-                <p class="icon-text">🌍 <strong>Country:</strong> <span th:text="${shelter.country}"></span></p>
-                <p class="icon-text mb-space">📍 <strong>City:</strong> <span th:text="${shelter.city}"></span></p>
+                <div class="shelter-detail">🪪 <strong>ID:</strong> <span th:text="${shelter.id}"></span></div>
+                <div class="shelter-detail">🌍 <strong>Country:</strong> <span th:text="${shelter.country}"></span></div>
+                <div class="shelter-detail">📍 <strong>City:</strong> <span th:text="${shelter.city}"></span></div>
 
-                <div class="animal-actions">
-                    <a th:href="@{/shelters/{id}/animals(id=${shelter.id})}" class="btn-orange">View Animals</a>
+                <div class="shelter-actions">
+                    <a th:href="@{/shelters/{id}/animals(id=${shelter.id})}" class="btn-action">View Animals</a>
                 </div>
             </div>
 

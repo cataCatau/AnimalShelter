@@ -17,13 +17,12 @@ CREATE TABLE shelters (
 CREATE TABLE cages (
                        id SERIAL PRIMARY KEY,
                        shelter_id INT NOT NULL REFERENCES shelters(id) ON DELETE CASCADE,
-                       max_capacity INT DEFAULT 5 -- Added capacity, per requirements
+                       maximum_capacity INT DEFAULT 5 -- Added capacity, per requirements
 );
 
 -- Animals Table
 CREATE TABLE animals (
                          id SERIAL PRIMARY KEY,
-                         shelter_id INT REFERENCES shelters(id) ON DELETE CASCADE,
                          cage_id INT REFERENCES cages(id) ON DELETE SET NULL,
                          name VARCHAR(100) NOT NULL,
                          species VARCHAR(50) NOT NULL,
@@ -74,5 +73,30 @@ END IF;
 END IF;
 
 RETURN v_score;
+END;
+
+-- 1. Funcția care verifică capacitatea
+CREATE OR REPLACE FUNCTION fn_check_cage_capacity()
+RETURNS TRIGGER AS $$
+DECLARE
+v_current_count INT;
+    v_max_capacity INT;
+BEGIN
+    -- 1. Numărăm animalele care sunt deja în această cușcă
+SELECT COUNT(*) INTO v_current_count
+FROM animals
+WHERE cage_id = NEW.cage_id;
+
+-- 2. Luăm capacitatea folosind numele corect: maximum_capacity
+SELECT maximum_capacity INTO v_max_capacity
+FROM cages
+WHERE id = NEW.cage_id;
+
+-- 3. Verificăm dacă mai este loc
+IF v_current_count >= v_max_capacity THEN
+        RAISE EXCEPTION 'CAGE_FULL_ERROR: Cage % is full! (Max: %)', NEW.cage_id, v_max_capacity;
+END IF;
+
+RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

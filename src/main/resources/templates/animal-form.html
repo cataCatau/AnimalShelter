@@ -13,6 +13,11 @@
     </div>
 
     <div class="login-body">
+        <div th:if="${error}" class="error-banner">
+            <span class="error-icon">⚠️</span>
+            <span th:text="${error}">Error message</span>
+        </div>
+
 
         <form action="#" th:action="@{/shelters/{id}/animals/save(id=${shelterId})}" th:object="${animal}" method="post">
             <input type="hidden" th:field="*{id}" />

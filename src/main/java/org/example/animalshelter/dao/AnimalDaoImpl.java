@@ -21,9 +21,6 @@ public class AnimalDaoImpl implements AnimalDao {
         Animal animal = new Animal();
         animal.setId(rs.getLong("id"));
 
-        long shelterId = rs.getLong("shelter_id");
-        animal.setShelterId(rs.wasNull() ? null : shelterId);
-
         long cageId = rs.getLong("cage_id");
         animal.setCageId(rs.wasNull() ? null : cageId);
 
@@ -61,8 +58,9 @@ public class AnimalDaoImpl implements AnimalDao {
     }
 
     @Override
-    public List<Animal> findByShelterId(Long shelterId){
-        String sql = "SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a " +
+    public List<Animal> findByShelterId(Long shelterId) {
+        String sql = "SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score " +
+                "FROM animals a " +
                 "JOIN cages c ON a.cage_id = c.id " +
                 "WHERE c.shelter_id = ?";
         return jdbcTemplate.query(sql, rowMapper, shelterId);
@@ -70,8 +68,8 @@ public class AnimalDaoImpl implements AnimalDao {
 
     @Override
     public void save(Animal animal) {
-        String sql = "INSERT INTO animals (shelter_id, cage_id, name, species, breed, date_of_birth, date_of_entry, image_url, gender, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, animal.getShelterId(), animal.getCageId(), animal.getName(),
+        String sql = "INSERT INTO animals (cage_id, name, species, breed, date_of_birth, date_of_entry, image_url, gender, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, animal.getCageId(), animal.getName(),
                             animal.getSpecies(), animal.getBreed(), animal.getDateOfBirth(),
                             animal.getDateOfEntry(), animal.getImageUrl(), animal.getGender(),
                             animal.getDescription());
@@ -79,8 +77,8 @@ public class AnimalDaoImpl implements AnimalDao {
 
     @Override
     public void update(Animal animal) {
-        String sql = "UPDATE animals SET shelter_id = ?, cage_id = ?, name = ?, species = ?, breed = ?, date_of_birth = ?, date_of_entry = ?, image_url = ?, gender = ?, description = ? WHERE id = ?";
-        jdbcTemplate.update(sql, animal.getShelterId(), animal.getCageId(), animal.getName(),
+        String sql = "UPDATE animals SET cage_id = ?, name = ?, species = ?, breed = ?, date_of_birth = ?, date_of_entry = ?, image_url = ?, gender = ?, description = ? WHERE id = ?";
+        jdbcTemplate.update(sql,animal.getCageId(), animal.getName(),
                             animal.getSpecies(), animal.getBreed(), animal.getDateOfBirth(),
                             animal.getDateOfEntry(), animal.getImageUrl(),
                             animal.getGender(), animal.getDescription(), animal.getId());
