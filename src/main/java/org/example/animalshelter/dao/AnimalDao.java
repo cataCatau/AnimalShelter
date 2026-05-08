@@ -1,6 +1,8 @@
 package org.example.animalshelter.dao;
 
 import org.example.animalshelter.model.Animal;
+import org.example.animalshelter.model.Person;
+
 import java.util.List;
 
 public interface AnimalDao {
@@ -10,5 +12,6 @@ public interface AnimalDao {
     List<Animal> findByShelterId(Long shelterId);
     void save(Animal animal);
     void update(Animal animal);
+    void adoptAnimal(Long animalId, Person person);
     void delete(Long id);
 }

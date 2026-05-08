@@ -18,6 +18,7 @@ public class Animal {
     private String gender;
     private String description;
     private Integer adoptionScore;
+    private Boolean isAdopted;
     public Animal() {}
 
     public Long getId() { return id; }
@@ -42,4 +43,6 @@ public class Animal {
     public void setGender(String gender) { this.gender = gender; }
     public Integer getAdoptionScore() { return adoptionScore; }
     public void setAdoptionScore(Integer adoptionScore) { this.adoptionScore = adoptionScore; }
+    public Boolean getIsAdopted() { return isAdopted; }
+    public void setIsAdopted(Boolean isAdopted) { this.isAdopted = isAdopted; }
 }

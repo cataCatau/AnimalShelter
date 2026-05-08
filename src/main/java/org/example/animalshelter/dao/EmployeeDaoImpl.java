@@ -18,9 +18,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private final RowMapper<Employee> rowMapper = (rs, rowNum) -> {
         Employee employee = new Employee();
         employee.setId(rs.getLong("id"));
+        employee.setShelterId(rs.getLong("shelter_id"));
+        employee.setFirstName(rs.getString("first_name"));
+        employee.setLastName(rs.getString("last_name"));
         employee.setUsername(rs.getString("username"));
         employee.setPassword(rs.getString("password"));
-        employee.setFullName(rs.getString("full_name"));
+        employee.setPhone(rs.getString("phone"));
+        employee.setRole(rs.getString("role"));
+        employee.setSalary(rs.getDouble("salary"));
         return employee;
     };
 

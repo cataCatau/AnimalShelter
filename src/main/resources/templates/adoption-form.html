@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adopt Animal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+
+<div class="login-card" style="width: 500px;">
+    <div class="login-header">
+        <h3>❤️ Adoption Process</h3>
+    </div>
+
+    <div class="login-body">
+        <form th:action="@{/shelters/{shelterId}/animals/{animalId}/adopt(shelterId=${shelterId}, animalId=${animalId})}" th:object="${person}" method="post">
+
+            <div class="form-group">
+                <label>First Name:</label>
+                <input type="text" th:field="*{firstName}" required class="form-control" placeholder="John">
+            </div>
+
+            <div class="form-group">
+                <label>Last Name:</label>
+                <input type="text" th:field="*{lastName}" required class="form-control" placeholder="Doe">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="text" th:field="*{phone}" required class="form-control" placeholder="07...">
+            </div>
+
+            <div class="form-group">
+                <label>Email Address:</label>
+                <input type="email" th:field="*{email}" required class="form-control" placeholder="john@example.com">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Finalize Adoption</button>
+            <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn btn-secondary" style="width: 100%; text-align: center; margin-top: 10px; display: block; box-sizing: border-box;">Cancel</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

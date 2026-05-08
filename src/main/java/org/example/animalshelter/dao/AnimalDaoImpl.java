@@ -1,6 +1,7 @@
 package org.example.animalshelter.dao;
 
 import org.example.animalshelter.model.Animal;
+import org.example.animalshelter.model.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,7 @@ public class AnimalDaoImpl implements AnimalDao {
         animal.setDescription(rs.getString("description"));
 
         animal.setAdoptionScore(rs.getInt("adoption_score"));
+        animal.setIsAdopted(rs.getBoolean("is_adopted"));
         return animal;
     };
 
@@ -87,5 +89,21 @@ public class AnimalDaoImpl implements AnimalDao {
     @Override
     public void delete(Long id) {
         jdbcTemplate.update("DELETE FROM animals WHERE id = ?", id);
+    }
+
+    @Override
+    public void adoptAnimal(Long animalId, Person person) {
+        String sqlPerson = "INSERT INTO people (first_name, last_name, phone, email) VALUES (?, ?, ?, ?) RETURNING id";
+        Long personId = jdbcTemplate.queryForObject(
+                sqlPerson,
+                Long.class,
+                person.getFirstName(), person.getLastName(), person.getPhone(), person.getEmail()
+        );
+
+        String sqlAdoption = "INSERT INTO adoptions (animal_id, person_id, adoption_date) VALUES (?, ?, CURRENT_DATE)";
+        jdbcTemplate.update(sqlAdoption, animalId, personId);
+
+        String sqlUpdateAnimal = "UPDATE animals SET is_adopted = true WHERE id = ?";
+        jdbcTemplate.update(sqlUpdateAnimal, animalId);
     }
 }

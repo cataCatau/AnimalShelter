@@ -144,21 +144,23 @@ body {
 }
 
 .error-banner {
-    background-color: #f8d7da;
-    color: #842029;
+    background-color: #f8d7da; /* Light red background */
+    color: #842029;            /* Dark red text */
     border: 1px solid #f5c2c7;
-    padding: 12px 15px;
+    padding: 15px 20px;        /* Increased padding for a more spacious look */
     border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 0.95rem;
+    margin-bottom: 25px;       /* Slightly more margin below the banner */
+    font-size: 1rem;           /* Slightly larger font size */
+    font-weight: bold;         /* Make the text bold for emphasis */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;                 /* Increased gap between icon and text */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Added a subtle shadow */
     animation: shake 0.5s;
 }
 
 .error-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;         /* Larger icon */
 }
 
 @keyframes shake {
@@ -171,7 +173,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* <-- Modifică aici din height în min-height */
+    padding: 40px 20px; /* <-- Adaugă asta ca să respire sus și jos */
+    box-sizing: border-box; /* <-- Adaugă asta */
     background-image: url('/background_login.png');
     background-size: cover;
     background-position: center;
@@ -364,6 +368,23 @@ body {
     height: 200px;
 }
 
+
+.btn-adopt {
+    background-color: #28a745 !important;
+}
+
+.btn-adopt:hover {
+    background-color: #218838 !important;
+}
+
+
+.btn-delete {
+    background-color: #dc3545 !important;
+}
+
+.btn-delete:hover {
+    background-color: #c82333 !important; /* Un roșu mai închis la hover */
+}
 .shelter-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
