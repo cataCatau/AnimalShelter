@@ -6,37 +6,43 @@
 </head>
 <body class="login-page">
 
-<div class="login-card" style="width: 500px;">
+<div class="login-card" style="width:460px;">
     <div class="login-header">
         <h3>❤️ Adoption Process</h3>
     </div>
 
-    <div class="login-body">
-        <form th:action="@{/shelters/{shelterId}/animals/{animalId}/adopt(shelterId=${shelterId}, animalId=${animalId})}" th:object="${person}" method="post">
+    <div class="login-body" style="background:var(--bark);color:var(--cream);">
+        <p style="font-size:.85rem;color:var(--txt-secondary);margin:0 0 22px;text-align:center;">
+            Fill in your details to give this animal a forever home 🏡
+        </p>
 
-            <div class="form-group">
-                <label>First Name:</label>
-                <input type="text" th:field="*{firstName}" required class="form-control" placeholder="John">
+        <form th:action="@{/shelters/{sId}/animals/{aId}/adopt(sId=${shelterId},aId=${animalId})}"
+              th:object="${person}" method="post">
+
+            <div class="flex-row">
+                <div class="form-group flex-item">
+                    <label>First Name</label>
+                    <input type="text" th:field="*{firstName}" placeholder="John" required>
+                </div>
+                <div class="form-group flex-item">
+                    <label>Last Name</label>
+                    <input type="text" th:field="*{lastName}" placeholder="Doe" required>
+                </div>
             </div>
 
             <div class="form-group">
-                <label>Last Name:</label>
-                <input type="text" th:field="*{lastName}" required class="form-control" placeholder="Doe">
+                <label>Phone Number</label>
+                <input type="text" th:field="*{phone}" placeholder="07xx xxx xxx" required>
             </div>
 
             <div class="form-group">
-                <label>Phone Number:</label>
-                <input type="text" th:field="*{phone}" required class="form-control" placeholder="07...">
-            </div>
-
-            <div class="form-group">
-                <label>Email Address:</label>
-                <input type="email" th:field="*{email}" required class="form-control" placeholder="john@example.com">
+                <label>Email Address</label>
+                <input type="email" th:field="*{email}" placeholder="john@example.com" required>
             </div>
 
             <div class="button-group">
                 <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn-cancel">Cancel</a>
-                <button type="submit" class="btn-submit">Finalize Adoption</button>
+                <button type="submit" class="btn-submit">❤ Finalize Adoption</button>
             </div>
         </form>
     </div>

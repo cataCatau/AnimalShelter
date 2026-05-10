@@ -3,48 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Animals</title>
+    <title>Animals</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<div class="page-container">
-
-    <div class="main-header">
-        <div>
-            <h2 class="header-title">🐾 Shelter Animals</h2>
-            <p class="header-subtitle">Meet our lovely friends looking for a home</p>
-        </div>
-
-        <div class="header-actions">
-            <a th:if="${shelterId != null}" th:href="@{/shelters/{id}/animals/new(id=${shelterId})}" class="btn-action btn-header btn-add">+ Add Animal</a>
-
-            <a th:href="@{/shelters}" class="btn-action btn-header" style="background-color: #6c757d;">⬅️ Back to Shelters</a>
-        </div>
+<div class="main-header">
+    <div>
+        <h2 class="header-title">🐾 Shelter Animals</h2>
+        <p class="header-subtitle">Looking for a forever home</p>
     </div>
+    <div class="header-actions">
+        <a th:if="${shelterId != null}"
+           th:href="@{/shelters/{id}/animals/new(id=${shelterId})}"
+           class="btn-action btn-header btn-add">+ Add Animal</a>
+        <a th:href="@{/shelters}" class="btn-action btn-header btn-logout">⬅ Back</a>
+    </div>
+</div>
 
+<div class="page-container">
     <div class="animals-grid">
 
         <div class="animal-card" th:each="animal : ${animals}">
 
             <div class="animal-img-wrapper">
-                <img th:if="${animal.imageUrl != null}" th:src="${animal.imageUrl}" class="animal-img" alt="Animal photo">
-                <img th:if="${animal.imageUrl == null}" src="https://via.placeholder.com/400x500?text=No+Photo" class="animal-img" alt="No photo available">
+                <img th:if="${animal.imageUrl != null}"
+                     th:src="${animal.imageUrl}"
+                     class="animal-img"
+                     alt="Animal photo">
+                <img th:if="${animal.imageUrl == null}"
+                     src="https://via.placeholder.com/260x420?text=No+Photo"
+                     class="animal-img"
+                     alt="No photo">
+                <!-- species tag rendered via a small inline span so Thymeleaf can bind it -->
+                <span style="position:relative;z-index:2;background:var(--honey);color:var(--onyx);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:2px 9px;border-radius:4px;align-self:flex-start;"
+                      th:text="${animal.species}">Species</span>
             </div>
 
             <div class="animal-content">
-
                 <div class="animal-header">
-                    <h3 class="animal-name" th:text="${animal.name}">Animal Name</h3>
-                    <div class="animal-breed" th:text="${animal.species} + ' • ' + ${animal.breed}">Species • Breed</div>
+                    <div>
+                        <h3 class="animal-name" th:text="${animal.name}">Name</h3>
+                        <div class="animal-breed" th:text="${animal.breed}">Breed</div>
+                    </div>
                 </div>
 
                 <div class="animal-details-grid">
-                    <div class="detail-item">🪪 <strong>ID:</strong> <span th:text="${animal.id}"></span></div>
-                    <div class="detail-item">🔒 <strong>Cage:</strong> <span th:text="${animal.cageId}"></span></div>
-                    <div class="detail-item">🚻 <strong>Gender:</strong> <span th:text="${animal.gender}"></span></div>
-                    <div class="detail-item">🎂 <strong>Born:</strong> <span th:text="${animal.dateOfBirth}"></span></div>
-                    <div class="detail-item" style="grid-column: span 2;">📅 <strong>Entry Date:</strong> <span th:text="${animal.dateOfEntry}"></span></div>
+                    <span class="detail-item">🪪 <strong>ID:</strong> <span th:text="${animal.id}"></span></span>
+                    <span class="detail-item">🔒 <strong>Cage:</strong> <span th:text="${animal.cageId}"></span></span>
+                    <span class="detail-item">🚻 <strong>Gender:</strong> <span th:text="${animal.gender}"></span></span>
+                    <span class="detail-item">🎂 <strong>Born:</strong> <span th:text="${animal.dateOfBirth}"></span></span>
+                    <span class="detail-item">📅 <strong>Entry:</strong> <span th:text="${animal.dateOfEntry}"></span></span>
                 </div>
 
                 <p class="animal-desc" th:text="'&ldquo;' + ${animal.description} + '&rdquo;'"></p>
@@ -52,30 +61,31 @@
                 <div class="animal-footer">
                     <div class="adoption-score-container">
                         <div class="score-header">
-                            <span>📈 Adoption Chance</span>
+                            <span>Adoption chance</span>
                             <span class="score-value" th:text="${animal.adoptionScore} + '%'"></span>
                         </div>
                         <div class="progress-bar-bg">
                             <div class="progress-bar-fill"
-                                 th:styleappend="'width: ' + ${animal.adoptionScore} + '%; background-color: ' + (${animal.adoptionScore} > 75 ? '#28a745' : (${animal.adoptionScore} > 40 ? '#ffc107' : '#dc3545')) + ';'">
+                                 th:styleappend="'width:' + ${animal.adoptionScore} + '%;background:' + (${animal.adoptionScore} > 75 ? '#5aaa65' : (${animal.adoptionScore} > 40 ? '#f0c060' : '#c05030')) + ';'">
                             </div>
                         </div>
                     </div>
 
-                    <div class="animal-actions" style="display: flex; gap: 10px;">
-                        <a th:href="@{/shelters/{sId}/animals/{aId}/edit(sId=${shelterId}, aId=${animal.id})}" class="btn-action"> ✏️️ Edit</a>
-
-                        <a th:href="@{/shelters/{shelterId}/animals/{animalId}/delete(shelterId=${shelterId}, animalId=${animal.id})}"
+                    <div class="animal-actions">
+                        <a th:href="@{/shelters/{sId}/animals/{aId}/edit(sId=${shelterId},aId=${animal.id})}"
+                           class="btn-action">✏ Edit</a>
+                        <a th:href="@{/animals/{id}/medical-records(id=${animal.id})}" class="btn-action">🏥 Medical</a>
+                        <a th:href="@{/shelters/{sId}/animals/{aId}/delete(sId=${shelterId},aId=${animal.id})}"
                            class="btn-action btn-delete"
-                           onclick="return confirm('Are you sure you want to delete this animal?');">🗑️ Delete</a>
-
-                        <a th:if="${!animal.isAdopted}" th:href="@{/shelters/{shelterId}/animals/{animalId}/adopt(shelterId=${shelterId}, animalId=${animal.id})}" class="btn-action btn-adopt">❤️ Adopt</a>
+                           onclick="return confirm('Delete this animal?')">🗑 Delete</a>
+                        <a th:if="${!animal.isAdopted}"
+                           th:href="@{/shelters/{sId}/animals/{aId}/adopt(sId=${shelterId},aId=${animal.id})}"
+                           class="btn-action btn-adopt">❤ Adopt</a>
                     </div>
                 </div>
-
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 

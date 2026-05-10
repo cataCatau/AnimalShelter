@@ -2,81 +2,83 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add New Animal</title>
+    <title>Animal Registration</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="login-page">
 
-<div class="login-card" style="width: 500px;">
+<div class="login-card" style="width:540px;">
     <div class="login-header">
         <h3>🐾 Animal Registration</h3>
     </div>
 
-    <div class="login-body">
+    <div class="login-body" style="background:var(--bark);color:var(--cream);">
+
         <div th:if="${error}" class="error-banner">
             <span class="error-icon">⚠️</span>
-            <span th:text="${error}">Error message</span>
+            <span th:text="${error}"></span>
         </div>
-
 
         <form action="#" th:action="@{/shelters/{id}/animals/save(id=${shelterId})}" th:object="${animal}" method="post">
             <input type="hidden" th:field="*{id}" />
+
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" th:field="*{name}" placeholder="Ex: Rex" required>
+                <input type="text" th:field="*{name}" placeholder="e.g. Rex" required>
             </div>
 
-            <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="width: 50%;">
+            <div class="flex-row">
+                <div class="form-group flex-item">
                     <label>Species</label>
-                    <input type="text" th:field="*{species}" placeholder="Ex: Dog" required>
+                    <input type="text" th:field="*{species}" placeholder="e.g. Dog" required>
                 </div>
-                <div class="form-group" style="width: 50%;">
+                <div class="form-group flex-item">
                     <label>Breed</label>
-                    <input type="text" th:field="*{breed}" placeholder="Ex: Shepherd">
+                    <input type="text" th:field="*{breed}" placeholder="e.g. Shepherd">
                 </div>
             </div>
 
-            <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="width: 50%;">
+            <div class="flex-row">
+                <div class="form-group flex-item">
                     <label>Date of Birth</label>
                     <input type="date" th:field="*{dateOfBirth}" th:max="${today}">
                 </div>
-                <div class="form-group" style="width: 50%;">
+                <div class="form-group flex-item">
                     <label>Date of Entry</label>
                     <input type="date" th:field="*{dateOfEntry}" th:max="${today}" required>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Cage ID</label>
-                <input type="number" th:field="*{cageId}" placeholder="Ex: 1" required>
+            <div class="flex-row">
+                <div class="form-group flex-item">
+                    <label>Cage ID</label>
+                    <input type="number" th:field="*{cageId}" placeholder="e.g. 1" required>
+                </div>
+                <div class="form-group flex-item">
+                    <label>Gender</label>
+                    <select th:field="*{gender}">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
                 <label>Image URL</label>
-                <input type="text" th:field="*{imageUrl}" placeholder="Link to the animal's image...">
+                <input type="text" th:field="*{imageUrl}" placeholder="https://...">
             </div>
 
-            <div class="form-group" style="width: 40%;">
-                <label>Gender</label>
-                <select th:field="*{gender}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Unknown">Unknown</option>
-                </select>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea th:field="*{description}" placeholder="Personality, history, quirks..." rows="3"
+                          style="background:var(--bark-mid);border:1px solid var(--border-warm);border-radius:var(--radius-sm);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.93rem;padding:11px 14px;width:100%;box-sizing:border-box;resize:vertical;"></textarea>
             </div>
 
-            <div class="form-group" style="width: 60%;">
-                <label>Description (Personality, history...)</label>
-                <textarea th:field="*{description}" placeholder="An active and loving nature..." rows="2" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+            <div class="button-group">
+                <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-submit">Save Animal</button>
             </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn-custom" style="background-color: #6c757d; text-align: center; width: 30%; text-decoration: none;">Cancel</a>
-                <button type="submit" class="btn-login" style="margin-top: 0; width: 70%;">Save Animal</button>
-            </div>
-
         </form>
     </div>
 </div>

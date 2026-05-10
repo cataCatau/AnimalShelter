@@ -2,23 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manage Employees</title>
+    <title>Employees</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div class="page-container">
 
-    <div class="main-header">
-        <div>
-            <h2 class="header-title">👥 Shelter Employees</h2>
-            <p class="header-subtitle">Manage staff and payroll</p>
-        </div>
-        <div class="header-actions">
-            <a th:href="@{/shelters/{id}/employees/new(id=${shelterId})}" class="btn-action btn-header btn-add">+ Add Employee</a>
-            <a th:href="@{/shelters}" class="btn-action btn-header" style="background-color: #6c757d;">⬅️ Back</a>
-        </div>
+<div class="main-header">
+    <div>
+        <h2 class="header-title">👥 Shelter Employees</h2>
+        <p class="header-subtitle">Staff &amp; payroll</p>
     </div>
+    <div class="header-actions">
+        <a th:href="@{/shelters/{id}/employees/new(id=${shelterId})}" class="btn-action btn-header btn-add">+ Add Employee</a>
+        <a th:href="@{/shelters}" class="btn-action btn-header btn-logout">⬅ Back</a>
+    </div>
+</div>
 
+<div class="page-container">
     <table class="stats-table">
         <thead>
         <tr>
@@ -32,25 +32,27 @@
         </thead>
         <tbody>
         <tr th:each="emp : ${employees}">
-            <td th:text="${emp.id}" style="color: #6c757d;"></td>
-            <td th:text="${emp.firstName + ' ' + emp.lastName}" style="font-weight: bold; color: #333;"></td>
-
+            <td style="color:var(--stone-light);font-weight:600;" th:text="${emp.id}"></td>
+            <td style="font-weight:600;color:var(--cream);" th:text="${emp.firstName + ' ' + emp.lastName}"></td>
             <td>
-                <span style="background-color: #e9ecef; padding: 5px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; color: #495057;" th:text="${emp.role}"></span>
+                    <span style="background:rgba(240,192,96,.1);border:1px solid rgba(240,192,96,.2);color:var(--honey);font-size:.75rem;font-weight:600;padding:3px 12px;border-radius:6px;letter-spacing:.3px;"
+                          th:text="${emp.role}"></span>
             </td>
-
-            <td th:text="${emp.salary + ' RON'}" style="color: #05627d; font-weight: bold;"></td>
-            <td th:text="${emp.phone}"></td>
-
+            <td style="color:var(--forest-light);font-weight:600;" th:text="${emp.salary + ' RON'}"></td>
+            <td style="color:var(--stone-light);" th:text="${emp.phone}"></td>
             <td>
-                <div style="display: flex; gap: 8px; justify-content: center;">
-                    <a th:href="@{/shelters/{sId}/employees/{eId}/edit(sId=${shelterId}, eId=${emp.id})}" class="btn-action">✏️ Edit</a>
-                    <a th:href="@{/shelters/{sId}/employees/{eId}/delete(sId=${shelterId}, eId=${emp.id})}" class="btn-action btn-delete" onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                <div style="display:flex;gap:8px;justify-content:center;">
+                    <a th:href="@{/shelters/{sId}/employees/{eId}/edit(sId=${shelterId},eId=${emp.id})}"
+                       class="btn-action">✏ Edit</a>
+                    <a th:href="@{/shelters/{sId}/employees/{eId}/delete(sId=${shelterId},eId=${emp.id})}"
+                       class="btn-action btn-delete"
+                       onclick="return confirm('Delete this employee?')">🗑 Delete</a>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
 </body>
 </html>

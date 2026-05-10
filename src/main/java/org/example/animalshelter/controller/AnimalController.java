@@ -2,7 +2,9 @@ package org.example.animalshelter.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.animalshelter.dao.AnimalDao;
+import org.example.animalshelter.dao.MedicalRecordDao;
 import org.example.animalshelter.model.Animal;
+import org.example.animalshelter.model.MedicalRecord;
 import org.example.animalshelter.model.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -22,10 +24,12 @@ public class AnimalController {
 
     private final AnimalDao animalDao;
     private final JdbcTemplate jdbcTemplate;
+    private final MedicalRecordDao medicalRecordDao;
 
-    public AnimalController(AnimalDao animalDao, JdbcTemplate jdbcTemplate) {
+    public AnimalController(AnimalDao animalDao, JdbcTemplate jdbcTemplate, MedicalRecordDao medicalRecordDao) {
         this.animalDao = animalDao;
         this.jdbcTemplate = jdbcTemplate;
+        this.medicalRecordDao = medicalRecordDao;
     }
 
     @GetMapping("/animals")
@@ -182,5 +186,32 @@ public class AnimalController {
         List<Animal> adoptedAnimals = animalDao.findAllAdopted();
         model.addAttribute("animals", adoptedAnimals);
         return "adopted-animals";
+    }
+
+    @GetMapping("/animals/{id}/medical-records")
+    public String viewMedicalRecords(@PathVariable("id") Long animalId, Model model, HttpSession session) {
+        if (session.getAttribute("loggedIn") == null) return "redirect:/login";
+
+        model.addAttribute("animal", animalDao.findById(animalId));
+        model.addAttribute("records", medicalRecordDao.findByAnimalId(animalId));
+
+        MedicalRecord newRecord = new MedicalRecord();
+        newRecord.setAnimalId(animalId);
+        newRecord.setInterventionDate(java.time.LocalDate.now());
+        model.addAttribute("newRecord", newRecord);
+
+        return "medical-records";
+    }
+
+    @PostMapping("/animals/{id}/medical-records/save")
+    public String saveMedicalRecord(@PathVariable("id") Long animalId,
+                                    @ModelAttribute("newRecord") MedicalRecord record,
+                                    HttpSession session) {
+        if (session.getAttribute("loggedIn") == null) return "redirect:/login";
+
+        record.setAnimalId(animalId);
+        medicalRecordDao.save(record);
+
+        return "redirect:/animals/" + animalId + "/medical-records";
     }
 }
