@@ -93,17 +93,32 @@ public class AnimalDaoImpl implements AnimalDao {
 
     @Override
     public void adoptAnimal(Long animalId, Person person) {
-        String sqlPerson = "INSERT INTO people (first_name, last_name, phone, email) VALUES (?, ?, ?, ?) RETURNING id";
-        Long personId = jdbcTemplate.queryForObject(
-                sqlPerson,
-                Long.class,
-                person.getFirstName(), person.getLastName(), person.getPhone(), person.getEmail()
-        );
+        Long personId;
+
+        try {
+            String checkPersonSql = "SELECT id FROM people WHERE email = ?";
+            personId = jdbcTemplate.queryForObject(checkPersonSql, Long.class, person.getEmail());
+
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            String sqlPerson = "INSERT INTO people (first_name, last_name, phone, email) VALUES (?, ?, ?, ?) RETURNING id";
+            personId = jdbcTemplate.queryForObject(
+                    sqlPerson,
+                    Long.class,
+                    person.getFirstName(), person.getLastName(), person.getPhone(), person.getEmail()
+            );
+        }
 
         String sqlAdoption = "INSERT INTO adoptions (animal_id, person_id, adoption_date) VALUES (?, ?, CURRENT_DATE)";
         jdbcTemplate.update(sqlAdoption, animalId, personId);
 
-        String sqlUpdateAnimal = "UPDATE animals SET is_adopted = true WHERE id = ?";
+        String sqlUpdateAnimal = "UPDATE animals SET is_adopted = true, cage_id = NULL WHERE id = ?";
         jdbcTemplate.update(sqlUpdateAnimal, animalId);
     }
+
+    @Override
+    public List<Animal> findAllAdopted(){
+        String sql = "SELECT a.*, fn_calculate_adoption_chance(a.id) AS adoption_score FROM animals a WHERE a.is_adopted = true";
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
 }

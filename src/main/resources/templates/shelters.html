@@ -8,12 +8,21 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<div class="main-header">
 
+    <div>
+        <h2 class="header-title">🏢 Our Shelters</h2>
+        <p class="header-subtitle">Manage the animal shelter network</p>
+    </div>
+
+    <div class="header-actions">
+        <a th:href="@{/animals/adopted}" class="btn-action btn-header btn-adopted">❤️ Adopted Animals</a>
+        <a th:href="@{/logout}" class="btn-action btn-header btn-logout">🚪 Logout</a>
+    </div>
+
+</div>
 <div class="page-container">
 
-    <div class="page-header">
-        <h2 style="color: #05627d;">Shelters</h2>
-    </div>
     <div class="shelters-grid">
 
         <div class="shelter-card" th:each="shelter : ${shelters}">
@@ -29,9 +38,19 @@
                 <div class="shelter-detail">🪪 <strong>ID:</strong> <span th:text="${shelter.id}"></span></div>
                 <div class="shelter-detail">🌍 <strong>Country:</strong> <span th:text="${shelter.country}"></span></div>
                 <div class="shelter-detail">📍 <strong>City:</strong> <span th:text="${shelter.city}"></span></div>
+                <div class="shelter-detail">🐾 <strong>Animals:</strong> <span th:text="${shelter.currentAnimals} + ' / ' + ${shelter.totalCapacity}"></span></div>
+                <div class="shelter-detail">
+                    🟢 <strong>Free Spots:</strong>
+                    <span th:text="${shelter.freeSpots}"
+                          th:class="${shelter.freeSpots == 0 ? 'spots-full' : 'spots-available'}">
+    </span>
+                </div>
 
                 <div class="shelter-actions">
-                    <a th:href="@{/shelters/{id}/animals(id=${shelter.id})}" class="btn-action">View Animals</a>
+                    <a th:href="@{/shelters/{id}/animals(id=${shelter.id})}" class="btn-action">Animals</a>
+                    <a th:if="${session.employeeRole == 'Manager' or session.employeeRole == 'Admin'}"
+                       th:href="@{/shelters/{id}/employees(id=${shelter.id})}"
+                       class="btn-action btn-add">Employees</a>
                 </div>
             </div>
 

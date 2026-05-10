@@ -31,11 +31,18 @@ public class LoginController {
 
         if(employee != null){
             session.setAttribute("loggedIn", employee);
+            session.setAttribute("employeeRole", employee.getRole());
             return "redirect:/shelters";
         }
         else {
             model.addAttribute("error", "Invalid credentials");
             return "login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 }

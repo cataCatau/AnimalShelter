@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
@@ -37,5 +39,37 @@ public class EmployeeDaoImpl implements EmployeeDao {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public void save(Employee employee) {
+        String sql = "INSERT INTO employees (shelter_id, first_name, last_name, username, password, phone, role, salary) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                employee.getShelterId(), employee.getFirstName(), employee.getLastName(),
+                employee.getUsername(), employee.getPassword(), employee.getPhone(),
+                employee.getRole(), employee.getSalary());
+    }
+
+    @Override
+    public List<Employee> findByShelterId(Long shelterId) {
+        return jdbcTemplate.query("SELECT * FROM employees WHERE shelter_id = ?", rowMapper, shelterId);
+    }
+
+    @Override
+    public Employee findById(Long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM employees WHERE id = ?", rowMapper, id);
+    }
+
+    @Override
+    public void update(Employee emp) {
+        String sql = "UPDATE employees SET first_name=?, last_name=?, username=?, password=?, phone=?, role=?, salary=? WHERE id=?";
+        jdbcTemplate.update(sql, emp.getFirstName(), emp.getLastName(), emp.getUsername(),
+                emp.getPassword(), emp.getPhone(), emp.getRole(), emp.getSalary(), emp.getId());
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM employees WHERE id = ?", id);
     }
 }

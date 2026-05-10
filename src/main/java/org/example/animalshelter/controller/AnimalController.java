@@ -175,4 +175,12 @@ public class AnimalController {
 
         return "redirect:/shelters/" + shelterId + "/animals";
     }
+
+    @GetMapping("/animals/adopted")
+    public String showAdoptedAnimals(Model model, HttpSession session){
+        if ( session.getAttribute("loggedIn") == null ) return "redirect:/login";
+        List<Animal> adoptedAnimals = animalDao.findAllAdopted();
+        model.addAttribute("animals", adoptedAnimals);
+        return "adopted-animals";
+    }
 }

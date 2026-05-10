@@ -10,10 +10,17 @@
 
 <div class="page-container">
 
-    <div class="page-header">
-        <a th:if="${shelterId != null}" th:href="@{/shelters/{id}/animals/new(id=${shelterId})}" class="btn-custom">
-            + Add animal
-        </a>
+    <div class="main-header">
+        <div>
+            <h2 class="header-title">🐾 Shelter Animals</h2>
+            <p class="header-subtitle">Meet our lovely friends looking for a home</p>
+        </div>
+
+        <div class="header-actions">
+            <a th:if="${shelterId != null}" th:href="@{/shelters/{id}/animals/new(id=${shelterId})}" class="btn-action btn-header btn-add">+ Add Animal</a>
+
+            <a th:href="@{/shelters}" class="btn-action btn-header" style="background-color: #6c757d;">⬅️ Back to Shelters</a>
+        </div>
     </div>
 
     <div class="animals-grid">

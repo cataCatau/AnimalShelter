@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopted Animals</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="page-container">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div>
+            <h2 style="margin: 0; color: #05627d; font-size: 2rem;">❤️ Wall of Fame</h2>
+            <p class="text-muted" style="margin-top: 5px;">Our lucky animals who have found a family!</p>
+        </div>
+        <a th:href="@{/shelters}" class="btn-custom" style="background-color: #6c757d;">⬅️ Back to Shelters</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(animals)}" style="text-align: center; padding: 50px; background: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.06);">
+        <h3 style="color: #6c757d;">There are no adopted animals yet. Be the first to save a life!</h3>
+    </div>
+
+    <div class="animals-grid" th:if="${!#lists.isEmpty(animals)}">
+        <div class="animal-card" th:each="animal : ${animals}">
+            <div class="animal-img-wrapper">
+                <img th:if="${animal.imageUrl != null}" th:src="${animal.imageUrl}" class="animal-img" alt="Animal photo">
+                <img th:if="${animal.imageUrl == null}" src="https://via.placeholder.com/400x500?text=Happy+Tails" class="animal-img" alt="No photo available">
+            </div>
+
+            <div class="animal-content">
+                <div class="animal-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h3 class="animal-name" th:text="${animal.name}">Animal Name</h3>
+                        <div class="animal-breed" th:text="${animal.species} + ' • ' + ${animal.breed}">Species • Breed</div>
+                    </div>
+                    <span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);">ADOPTED ❤️</span>
+                </div>
+
+                <div class="animal-details-grid" style="margin-top: 15px;">
+                    <div class="detail-item">🪪 <strong>ID:</strong> <span th:text="${animal.id}"></span></div>
+                    <div class="detail-item">🚻 <strong>Gender:</strong> <span th:text="${animal.gender}"></span></div>
+                    <div class="detail-item" style="grid-column: span 2;">🎂 <strong>Born:</strong> <span th:text="${animal.dateOfBirth}"></span></div>
+                </div>
+
+                <p class="animal-desc" style="margin-top: 15px; flex-grow: 1;">This little animal is now enjoying the warmth of a home and is no longer in the shelter!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

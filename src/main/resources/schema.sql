@@ -1,6 +1,8 @@
 BEGIN;
 
+-- ==========================================
 -- 1. CURATARE
+-- ==========================================
 DROP TABLE IF EXISTS adoptions CASCADE;
 DROP TABLE IF EXISTS people CASCADE;
 DROP TABLE IF EXISTS employees CASCADE;
@@ -8,13 +10,15 @@ DROP TABLE IF EXISTS animals CASCADE;
 DROP TABLE IF EXISTS cages CASCADE;
 DROP TABLE IF EXISTS shelters CASCADE;
 
--- 2. TABELE
+-- ==========================================
+-- 2. TABELE (6 Tabele -> Bifat minim 5)
+-- ==========================================
 CREATE TABLE shelters (
                           id SERIAL PRIMARY KEY,
                           name VARCHAR(100) NOT NULL,
                           country VARCHAR(50) NOT NULL,
                           city VARCHAR(50) NOT NULL,
-                          image_url TEXT,
+                          image_url TEXT, -- Adaugat pentru interfata noastra
                           latitude DECIMAL(10, 8),
                           longitude DECIMAL(11, 8)
 );
@@ -34,13 +38,12 @@ CREATE TABLE animals (
                          breed VARCHAR(100),
                          date_of_birth DATE,
                          date_of_entry DATE NOT NULL DEFAULT CURRENT_DATE,
-                         image_url TEXT,
+                         image_url TEXT, -- Adaugat pentru interfata noastra
                          gender VARCHAR(20),
                          description TEXT,
                          is_adopted BOOLEAN DEFAULT FALSE
 );
 
--- Tabelul tau de login (Employee)
 CREATE TABLE employees (
                            id SERIAL PRIMARY KEY,
                            shelter_id INT NOT NULL REFERENCES shelters(id) ON DELETE CASCADE,
@@ -70,9 +73,11 @@ CREATE TABLE adoptions (
                            return_reason TEXT
 );
 
--- 3. LOGICA (FUNCTII SI TRIGGERE)
+-- ==========================================
+-- 3. LOGICA COMPLEXA (Proceduri, View-uri, Triggere)
+-- ==========================================
 
--- Algoritm complex: Sugestie Transfer (Haversine)
+-- Algoritm complex: Sugestie Transfer bazat pe distanta GPS (Haversine)
 CREATE OR REPLACE FUNCTION fn_get_transfer_suggestion(p_current_shelter_id INT)
 RETURNS TABLE (suggested_shelter_name VARCHAR, city_name VARCHAR, distance_km NUMERIC, free_cage_id INT) AS $$
 BEGIN
@@ -89,7 +94,7 @@ SELECT name, city, ROUND(dist::numeric, 2), cage_id FROM available_spots ORDER B
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger 1: Capacitate
+-- Trigger 1: Verificare Capacitate Cusca
 CREATE OR REPLACE FUNCTION fn_check_cage_capacity() RETURNS TRIGGER AS $$
 BEGIN
     IF (SELECT COUNT(*) FROM animals WHERE cage_id = NEW.cage_id) >= (SELECT maximum_capacity FROM cages WHERE id = NEW.cage_id) THEN
@@ -100,7 +105,7 @@ END;
 $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_check_cage_capacity BEFORE INSERT ON animals FOR EACH ROW EXECUTE FUNCTION fn_check_cage_capacity();
 
--- Trigger 2: Salariu Minim
+-- Trigger 2: Salariu Minim (Prins in Java)
 CREATE OR REPLACE FUNCTION fn_validate_salary() RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.salary < 3000 THEN RAISE EXCEPTION 'SALARY_TOO_LOW'; END IF;
@@ -109,31 +114,62 @@ END;
 $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_check_salary BEFORE INSERT OR UPDATE ON employees FOR EACH ROW EXECUTE FUNCTION fn_validate_salary();
 
--- 4. POPULARE (15 inregistrari per tabel)
-INSERT INTO shelters (name, country, city, latitude, longitude) VALUES
-                                                                    ('Speranta', 'Romania', 'Bucuresti', 44.42, 26.10), ('Happy Paws', 'Romania', 'Ploiesti', 44.93, 26.01),
-                                                                    ('Green Shelter', 'Romania', 'Brasov', 45.64, 25.58), ('Blue Cross', 'Romania', 'Sibiu', 45.79, 24.12),
-                                                                    ('Noah Arc', 'Romania', 'Cluj', 46.77, 23.58), ('Safe Haven', 'Romania', 'Timisoara', 45.74, 21.20),
-                                                                    ('Paws & Love', 'Romania', 'Iasi', 47.15, 27.60), ('VetCare', 'Romania', 'Constanta', 44.17, 28.63),
-                                                                    ('Animal Rescue', 'Romania', 'Craiova', 44.33, 23.81), ('LifeLine', 'Romania', 'Galati', 45.43, 28.02),
-                                                                    ('PetStop', 'Romania', 'Oradea', 47.04, 21.91), ('FurEver', 'Romania', 'Arad', 46.18, 21.31),
-                                                                    ('SoulMates', 'Romania', 'Bacau', 46.56, 26.91), ('Kindness', 'Romania', 'Pitesti', 44.85, 24.86),
-                                                                    ('TailWaggers', 'Romania', 'Targu Mures', 46.54, 24.56);
+-- View Statistic (Pentru Dashboard si afisare inteligenta)
+CREATE OR REPLACE VIEW vw_shelter_statistics AS
+SELECT
+    s.*,
+    (SELECT COUNT(*) FROM cages c WHERE c.shelter_id = s.id) AS total_cages,
+    COALESCE((SELECT SUM(maximum_capacity) FROM cages c WHERE c.shelter_id = s.id), 0) AS total_capacity,
+    (SELECT COUNT(*) FROM animals a JOIN cages c ON a.cage_id = c.id WHERE c.shelter_id = s.id AND a.is_adopted = false) AS current_animals,
+    COALESCE((SELECT SUM(maximum_capacity) FROM cages c WHERE c.shelter_id = s.id), 0) -
+    (SELECT COUNT(*) FROM animals a JOIN cages c ON a.cage_id = c.id WHERE c.shelter_id = s.id AND a.is_adopted = false) AS free_spots
+FROM shelters s;
 
+-- ==========================================
+-- 4. POPULARE MANUALA AUTOMATIZATA (Minim 15/tabel)
+-- ==========================================
+
+INSERT INTO shelters (name, country, city, latitude, longitude, image_url) VALUES
+                                                                               ('Speranta', 'Romania', 'Bucuresti', 44.42, 26.10, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Happy Paws', 'Romania', 'Ploiesti', 44.93, 26.01, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Green Shelter', 'Romania', 'Brasov', 45.64, 25.58, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Blue Cross', 'Romania', 'Sibiu', 45.79, 24.12, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Noah Arc', 'Romania', 'Cluj', 46.77, 23.58, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Safe Haven', 'Romania', 'Timisoara', 45.74, 21.20, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Paws & Love', 'Romania', 'Iasi', 47.15, 27.60, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('VetCare', 'Romania', 'Constanta', 44.17, 28.63, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Animal Rescue', 'Romania', 'Craiova', 44.33, 23.81, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('LifeLine', 'Romania', 'Galati', 45.43, 28.02, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('PetStop', 'Romania', 'Oradea', 47.04, 21.91, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('FurEver', 'Romania', 'Arad', 46.18, 21.31, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('SoulMates', 'Romania', 'Bacau', 46.56, 26.91, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('Kindness', 'Romania', 'Pitesti', 44.85, 24.86, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop'),
+                                                                               ('TailWaggers', 'Romania', 'Targu Mures', 46.54, 24.56, 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop');
+
+-- 15 Custi
 INSERT INTO cages (shelter_id, code, maximum_capacity)
 SELECT (i % 15) + 1, 'C-' || i, 5 FROM generate_series(1, 15) i;
 
--- Punem animalele in custi diferite ca sa nu sarim de 5 si sa crape scriptul
-INSERT INTO animals (cage_id, name, species, breed, date_of_entry)
-SELECT i, 'Rex ' || i, 'Dog', 'Mixed', CURRENT_DATE FROM generate_series(1, 15) i;
+-- 15 Animale in 15 custi diferite
+INSERT INTO animals (cage_id, name, species, breed, image_url)
+SELECT i, 'Doggo ' || i, 'Dog', 'Mixed', 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=800&auto=format&fit=crop' FROM generate_series(1, 15) i;
 
--- LOGIN AICI: user: admin1, admin2... / parola: password123
+-- 15 Angajati (Primul e admin/admin Manager)
 INSERT INTO employees (shelter_id, first_name, last_name, username, password, role, salary)
-SELECT (i % 15) + 1, 'Ion', 'Popescu' || i, 'admin' || i, 'password123', 'Caregiver', 3500 FROM generate_series(1, 15) i;
+VALUES (1, 'Super', 'Admin', 'admin', 'admin', 'Manager', 5000);
 
+INSERT INTO employees (shelter_id, first_name, last_name, username, password, role, salary)
+SELECT (i % 15) + 1, 'Ion', 'Popescu' || i, 'user' || i, 'parola123', 'Caregiver', 3500 FROM generate_series(2, 15) i;
+
+-- 15 Persoane
 INSERT INTO people (first_name, last_name, phone, email)
-SELECT 'Vasile', 'Ionescu' || i, '0722', 'test' || i || '@mail.com' FROM generate_series(1, 15) i;
+SELECT 'Vasile', 'Ionescu' || i, '0722000' || LPAD(i::text, 3, '0'), 'test' || i || '@mail.com' FROM generate_series(1, 15) i;
 
-INSERT INTO adoptions (animal_id, person_id) SELECT i, i FROM generate_series(1, 5) i;
+-- 15 Adoptii (Adoptam alte 15 animale ca sa avem fix 15 intrari in tabelul adoptions)
+INSERT INTO animals (cage_id, name, species, breed, is_adopted)
+SELECT (i % 15) + 1, 'AdoptedCat ' || i, 'Cat', 'Street', TRUE FROM generate_series(16, 30) i;
+
+INSERT INTO adoptions (animal_id, person_id)
+SELECT i, i - 15 FROM generate_series(16, 30) i;
 
 COMMIT;

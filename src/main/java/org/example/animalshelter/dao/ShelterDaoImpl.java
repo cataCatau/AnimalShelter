@@ -23,18 +23,22 @@ public class ShelterDaoImpl implements ShelterDao {
         shelter.setCountry(rs.getString("country"));
         shelter.setCity(rs.getString("city"));
         shelter.setImageUrl(rs.getString("image_url"));
+        shelter.setTotalCages(rs.getInt("total_cages"));
+        shelter.setTotalCapacity(rs.getInt("total_capacity"));
+        shelter.setCurrentAnimals(rs.getInt("current_animals"));
+        shelter.setFreeSpots(rs.getInt("free_spots"));
         return shelter;
     };
 
     @Override
     public List<Shelter> findAll() {
-        String sql = "SELECT * FROM shelters";
+        String sql = "SELECT * FROM vw_shelter_statistics ORDER BY id";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
     public Shelter findById(Long id) {
-        String sql = "SELECT * FROM shelters WHERE id = ?";
+        String sql = "SELECT * FROM vw_shelter_statistics WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Employees</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page-container">
+
+    <div class="main-header">
+        <div>
+            <h2 class="header-title">👥 Shelter Employees</h2>
+            <p class="header-subtitle">Manage staff and payroll</p>
+        </div>
+        <div class="header-actions">
+            <a th:href="@{/shelters/{id}/employees/new(id=${shelterId})}" class="btn-action btn-header btn-add">+ Add Employee</a>
+            <a th:href="@{/shelters}" class="btn-action btn-header" style="background-color: #6c757d;">⬅️ Back</a>
+        </div>
+    </div>
+
+    <table class="stats-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Salary</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emp : ${employees}">
+            <td th:text="${emp.id}" style="color: #6c757d;"></td>
+            <td th:text="${emp.firstName + ' ' + emp.lastName}" style="font-weight: bold; color: #333;"></td>
+
+            <td>
+                <span style="background-color: #e9ecef; padding: 5px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; color: #495057;" th:text="${emp.role}"></span>
+            </td>
+
+            <td th:text="${emp.salary + ' RON'}" style="color: #05627d; font-weight: bold;"></td>
+            <td th:text="${emp.phone}"></td>
+
+            <td>
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <a th:href="@{/shelters/{sId}/employees/{eId}/edit(sId=${shelterId}, eId=${emp.id})}" class="btn-action">✏️ Edit</a>
+                    <a th:href="@{/shelters/{sId}/employees/{eId}/delete(sId=${shelterId}, eId=${emp.id})}" class="btn-action btn-delete" onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

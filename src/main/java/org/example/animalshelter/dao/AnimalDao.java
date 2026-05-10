@@ -13,5 +13,6 @@ public interface AnimalDao {
     void save(Animal animal);
     void update(Animal animal);
     void adoptAnimal(Long animalId, Person person);
+    List<Animal> findAllAdopted();
     void delete(Long id);
 }

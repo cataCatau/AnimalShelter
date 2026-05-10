@@ -6,7 +6,10 @@ public class Shelter {
     private String country;
     private String city;
     private String imageUrl;
-
+    private Integer totalCages;
+    private Integer totalCapacity;
+    private Integer currentAnimals;
+    private Integer freeSpots;
 
     public Shelter() {
     }
@@ -33,4 +36,36 @@ public class Shelter {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public Integer getTotalCages() {
+        return totalCages;
+    }
+
+    public void setTotalCages(Integer totalCages) {
+        this.totalCages = totalCages;
+    }
+
+    public Integer getTotalCapacity() {
+        return totalCapacity;
+    }
+
+    public void setTotalCapacity(Integer totalCapacity) {
+        this.totalCapacity = totalCapacity;
+    }
+
+    public Integer getCurrentAnimals() {
+        return currentAnimals;
+    }
+
+    public void setCurrentAnimals(Integer currentAnimals) {
+        this.currentAnimals = currentAnimals;
+    }
+
+    public Integer getFreeSpots() {
+        return freeSpots;
+    }
+
+    public void setFreeSpots(Integer freeSpots) {
+        this.freeSpots = freeSpots;
+    }
 }

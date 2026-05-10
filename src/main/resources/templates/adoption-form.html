@@ -34,8 +34,10 @@
                 <input type="email" th:field="*{email}" required class="form-control" placeholder="john@example.com">
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Finalize Adoption</button>
-            <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn btn-secondary" style="width: 100%; text-align: center; margin-top: 10px; display: block; box-sizing: border-box;">Cancel</a>
+            <div class="button-group">
+                <a th:href="@{/shelters/{id}/animals(id=${shelterId})}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-submit">Finalize Adoption</button>
+            </div>
         </form>
     </div>
 </div>
