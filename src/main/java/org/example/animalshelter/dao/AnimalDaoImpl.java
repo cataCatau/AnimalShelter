@@ -121,4 +121,18 @@ public class AnimalDaoImpl implements AnimalDao {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+    @Override
+    public int countAll() {
+        Integer result = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM animals", Integer.class);
+        return result != null ? result : 0;
+    }
+
+    @Override
+    public int countAdopted() {
+        Integer result = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM animals WHERE is_adopted = TRUE", Integer.class);
+        return result != null ? result : 0;
+    }
+
 }

@@ -15,4 +15,7 @@ public interface AnimalDao {
     void adoptAnimal(Long animalId, Person person);
     List<Animal> findAllAdopted();
     void delete(Long id);
+    int countAll();
+    int countAdopted();
+
 }

@@ -61,4 +61,11 @@ public class ShelterDaoImpl implements ShelterDao {
         String sql = "DELETE FROM shelters WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public int countAll() {
+        String sql = "SELECT COUNT(*) FROM shelters";
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class);
+        return result != null ? result : 0;
+    }
 }

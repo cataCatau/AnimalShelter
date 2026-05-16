@@ -5,14 +5,14 @@
     <title>Animal Registration</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body class="login-page">
+<body class="form-page">
 
-<div class="login-card" style="width:540px;">
-    <div class="login-header">
+<div class="form-card">
+    <div class="form-card-header">
         <h3>🐾 Animal Registration</h3>
     </div>
 
-    <div class="login-body" style="background:var(--bark);color:var(--cream);">
+    <div class="form-card-body">
 
         <div th:if="${error}" class="error-banner">
             <span class="error-icon">⚠️</span>
@@ -71,8 +71,7 @@
 
             <div class="form-group">
                 <label>Description</label>
-                <textarea th:field="*{description}" placeholder="Personality, history, quirks..." rows="3"
-                          style="background:var(--bark-mid);border:1px solid var(--border-warm);border-radius:var(--radius-sm);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.93rem;padding:11px 14px;width:100%;box-sizing:border-box;resize:vertical;"></textarea>
+                <textarea th:field="*{description}" placeholder="Personality, history, quirks..." rows="3"></textarea>
             </div>
 
             <div class="button-group">

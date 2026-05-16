@@ -59,18 +59,6 @@
                 <p class="animal-desc" th:text="'&ldquo;' + ${animal.description} + '&rdquo;'"></p>
 
                 <div class="animal-footer">
-                    <div class="adoption-score-container">
-                        <div class="score-header">
-                            <span>Adoption chance</span>
-                            <span class="score-value" th:text="${animal.adoptionScore} + '%'"></span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill"
-                                 th:styleappend="'width:' + ${animal.adoptionScore} + '%;background:' + (${animal.adoptionScore} > 75 ? '#5aaa65' : (${animal.adoptionScore} > 40 ? '#f0c060' : '#c05030')) + ';'">
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="animal-actions">
                         <a th:href="@{/shelters/{sId}/animals/{aId}/edit(sId=${shelterId},aId=${animal.id})}"
                            class="btn-action">✏ Edit</a>

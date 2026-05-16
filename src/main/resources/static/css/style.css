@@ -323,84 +323,258 @@ h1, h2, h3, h4 {
 }
 
 /* =============================================
-   LOGIN PAGE
+   LOGIN PAGE — SPLIT SCREEN
    ============================================= */
 .login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     min-height: 100vh;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    background-image: url('/background_login.png');
-    background-size: cover;
-    background-position: center;
+    padding: 0;
+    background: var(--onyx);
+    background-image: none;
+}
+
+.login-page::before { display: none; }
+
+/* ── Left panel (dark / brand) ── */
+.lp-left {
+    background: var(--onyx);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 56px;
     position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--border);
 }
 
-.login-page::before {
-    content: '';
+.lp-left::after {
+    content: '🐾';
     position: absolute;
-    inset: 0;
-    background: rgba(10, 6, 2, 0.72);
+    font-size: 28rem;
+    bottom: -80px;
+    right: -60px;
+    opacity: .04;
+    pointer-events: none;
+    line-height: 1;
+    filter: grayscale(1);
 }
 
-.login-card {
+.lp-brand { position: relative; z-index: 1; }
+
+.lp-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.lp-logo img {
+    height: 46px;
+    filter: drop-shadow(0 2px 12px rgba(240,192,96,.4));
+}
+
+.lp-logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--honey);
+    line-height: 1;
+}
+
+.lp-logo-text small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: var(--txt-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.lp-hero { position: relative; z-index: 1; }
+
+.lp-tagline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.1rem;
+    line-height: 1.15;
+    color: var(--cream);
+    margin: 0 0 20px;
+    max-width: 380px;
+}
+
+.lp-tagline em {
+    font-style: italic;
+    color: var(--honey);
+}
+
+.lp-desc {
+    font-size: 0.93rem;
+    color: var(--txt-secondary);
+    line-height: 1.7;
+    max-width: 340px;
+    margin: 0;
+}
+
+.lp-stats {
     position: relative;
     z-index: 1;
-    background: var(--cream);
-    width: 400px;
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lift);
-    overflow: hidden;
+    display: flex;
+    gap: 0;
 }
 
-.login-header {
-    background: var(--onyx);
-    padding: 32px 28px 28px;
-    border-bottom: 1px solid rgba(240,192,96,.15);
-    text-align: center;
+.lp-stat {
+    display: flex;
+    flex-direction: column;
+    padding: 0 28px;
 }
 
-.login-header h3 {
-    color: var(--honey);
-    margin: 0;
-    font-size: 1.6rem;
+.lp-stat:first-child { padding-left: 0; }
+
+.lp-stat + .lp-stat { border-left: 1px solid var(--border); }
+
+.lp-stat-num {
     font-family: 'DM Serif Display', serif;
-    font-weight: 400;
+    font-size: 2rem;
+    color: var(--honey);
+    line-height: 1;
 }
 
-.login-header img {
-    max-height: 62px;
-    filter: drop-shadow(0 2px 10px rgba(0,0,0,.5));
+.lp-stat-label {
+    font-size: 0.72rem;
+    color: var(--txt-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
 }
 
-.login-body {
-    padding: 32px 32px;
+/* ── Right panel (cream / form) ── */
+.lp-right {
     background: var(--cream);
-    color: var(--onyx);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 72px;
+    position: relative;
 }
 
-/* Light overrides inside login */
-.login-body .form-group label { color: #6a4020; }
-.login-body .form-group input,
-.login-body .form-control {
-    background: white;
-    border: 1.5px solid rgba(138,96,64,.3);
+.lp-right::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle at top right, rgba(192,80,48,.1), transparent 70%);
+    pointer-events: none;
+}
+
+.lp-form-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--terra);
+    margin: 0 0 10px;
+}
+
+.lp-form-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
     color: var(--onyx);
+    margin: 0 0 36px;
+    line-height: 1.15;
 }
-.login-body .form-group input::placeholder,
-.login-body .form-control::placeholder { color: #a09080; }
-.login-body .form-group input:focus,
-.login-body .form-control:focus {
+
+.lp-form-title em {
+    font-style: italic;
+    color: var(--terra);
+}
+
+.lp-right .form-group { margin-bottom: 20px; }
+
+.lp-right .form-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6a4020;
+    margin-bottom: 8px;
+}
+
+.lp-right .form-group input {
+    width: 100%;
+    padding: 14px 18px;
+    background: white;
+    border: 1.5px solid rgba(138,96,64,.25);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    color: var(--onyx);
+    transition: border-color 0.18s, box-shadow 0.18s;
+    box-sizing: border-box;
+}
+
+.lp-right .form-group input::placeholder { color: #b0a090; }
+
+.lp-right .form-group input:focus {
+    outline: none;
     border-color: var(--terra);
-    box-shadow: 0 0 0 3px rgba(192,80,48,.12);
+    box-shadow: 0 0 0 3px rgba(192,80,48,.1);
 }
+
+.lp-right .btn-login {
+    width: 100%;
+    margin-top: 8px;
+    padding: 15px;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    border-radius: var(--radius-sm);
+    background: var(--terra);
+    color: white;
+    border: none;
+    font-family: 'DM Serif Display', serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 18px rgba(192,80,48,.35);
+}
+
+.lp-right .btn-login:hover {
+    background: var(--terra-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(192,80,48,.4);
+}
+
+.lp-error {
+    background: rgba(192,80,48,.08);
+    border: 1.5px solid rgba(192,80,48,.3);
+    color: var(--terra-dark);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.lp-footer-note {
+    margin-top: 30px;
+    font-size: 0.78rem;
+    color: #a09080;
+    line-height: 1.65;
+    padding-top: 20px;
+    border-top: 1px solid rgba(138,96,64,.15);
+}
+
+.lp-footer-note strong { color: #7a5030; }
 
 /* adoption-form uses login-card but needs dark inputs */
 .login-card.dark-form .login-body { background: var(--bark); color: var(--cream); }
 .login-card.dark-form .form-group label { color: var(--clay-light); }
 .login-card.dark-form .form-group input { background: var(--bark-mid); border-color: var(--border-warm); color: var(--cream); }
+
+@media (max-width: 860px) {
+    .login-page { grid-template-columns: 1fr; }
+    .lp-left { display: none; }
+    .lp-right { padding: 52px 36px; }
+}
 
 /* =============================================
    ERROR MESSAGES
@@ -843,6 +1017,74 @@ h1, h2, h3, h4 {
 }
 .medical-form-panel .form-group input:focus,
 .medical-form-panel .form-group textarea:focus {
+    border-color: var(--honey);
+    box-shadow: 0 0 0 3px rgba(240,192,96,.12);
+}
+/* =============================================
+   FORM PAGE — centered layout for modals/forms
+   (adoption-form, animal-form, employee-form)
+   ============================================= */
+.form-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    background: var(--onyx);
+}
+
+/* =============================================
+   FORM CARD — dedicated card for forms
+   (animal-form, adoption-form, employee-form)
+   ============================================= */
+.form-card {
+    background: var(--bark);
+    border: 1px solid var(--border-warm);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lift);
+    overflow: hidden;
+    width: 540px;
+}
+
+.form-card-header {
+    background: var(--onyx);
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-card-header h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--honey);
+    margin: 0;
+}
+
+.form-card-body {
+    padding: 32px;
+}
+
+.form-card-body .form-group label {
+    color: var(--clay-light);
+}
+
+.form-card-body .form-group input,
+.form-card-body .form-group select,
+.form-card-body .form-group textarea {
+    background: var(--bark-mid);
+    border: 1px solid var(--border-warm);
+    color: var(--cream);
+}
+
+.form-card-body .form-group input::placeholder,
+.form-card-body .form-group textarea::placeholder {
+    color: var(--stone);
+}
+
+.form-card-body .form-group input:focus,
+.form-card-body .form-group select:focus,
+.form-card-body .form-group textarea:focus {
     border-color: var(--honey);
     box-shadow: 0 0 0 3px rgba(240,192,96,.12);
 }

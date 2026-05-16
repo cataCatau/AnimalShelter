@@ -10,4 +10,5 @@ public interface ShelterDao {
     void save(Shelter shelter);
     void update(Shelter shelter);
     void delete(Long id);
+    int countAll();
 }

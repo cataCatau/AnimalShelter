@@ -2,33 +2,83 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login — Shelter Admin</title>
+    <title>Login — Happy Tails</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="login-page">
 
-<div class="login-card">
-    <div class="login-header">
-        <img class="logo" src="/logo.png" alt="PawHaven">
-    </div>
 
-    <div class="login-body">
-        <div th:if="${error != null}" class="error-message" th:text="${error}">
-            Invalid credentials
+<div class="lp-left">
+
+    <div class="lp-brand">
+        <div class="lp-logo">
+            <img src="/logo.png" alt="Happy Tails">
+            <div class="lp-logo-text">
+                Happy Tails
+                <small>Shelter Network</small>
+            </div>
         </div>
-
-        <form action="/login" method="post">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="your.username" required autocomplete="username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-            </div>
-            <button type="submit" class="btn-login">Sign In</button>
-        </form>
     </div>
+
+    <div class="lp-hero">
+        <h1 class="lp-tagline">
+            Every animal<br>
+            deserves a<br>
+            <em>loving home.</em>
+        </h1>
+        <p class="lp-desc">
+            Manage your shelter network, track animals,
+            coordinate adoptions, and give every pet
+            the best chance at finding their family.
+        </p>
+    </div>
+
+    <div class="lp-stats">
+        <div class="lp-stat">
+            <span class="lp-stat-num" th:text="${statAnimals}">—</span>
+            <span class="lp-stat-label">Animals sheltered</span>
+        </div>
+        <div class="lp-stat">
+            <span class="lp-stat-num" th:text="${statAdopted}">—</span>
+            <span class="lp-stat-label">Adoptions</span>
+        </div>
+        <div class="lp-stat">
+            <span class="lp-stat-num" th:text="${statShelters}">—</span>
+            <span class="lp-stat-label">Active shelters</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="lp-right">
+
+    <p class="lp-form-eyebrow">Staff portal</p>
+    <h2 class="lp-form-title">Welcome<br><em>back.</em></h2>
+
+    <div th:if="${error != null}" class="lp-error" th:text="${error}">
+        Invalid credentials
+    </div>
+
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username"
+                   placeholder="your.username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-login">Sign In →</button>
+    </form>
+
+    <p class="lp-footer-note">
+        <strong>Authorized personnel only.</strong><br>
+        Contact your shelter manager if you've lost access to your account.
+    </p>
+
 </div>
 
 </body>
